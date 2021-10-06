@@ -1,10 +1,28 @@
 <section>
-  <form>
+  <form
+    #form="ngForm"
+    (ngSubmit)="onSubmit(form)"
+    fxLayout="column"
+    fxLayoutAlign="center center"
+  >
     <mat-form-field>
-      <input matInput placeholder="Seu e-mail" type="email" />
+      <input
+        matInput
+        name="email"
+        ngModel
+        placeholder="Seu e-mail"
+        type="email"
+      />
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Sua senha" type="password" />
+      <input
+        matInput
+        name="password"
+        ngModel
+        placeholder="Sua senha"
+        type="password"
+      />
     </mat-form-field>
+    <button color="primary" mat-raised-button type="submit">Envia</button>
   </form>
 </section>
