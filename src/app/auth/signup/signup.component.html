@@ -24,6 +24,7 @@
         >Email inválido
       </mat-error>
     </mat-form-field>
+
     <mat-form-field hintLabel="Mínimo de 6 caracteres">
       <input
         #pwInput="ngModel"
@@ -38,11 +39,22 @@
       <mat-hint align="end">{{ pwInput.value?.length }} / 6</mat-hint>
       <mat-error>A senha deve ter no mínimo 6 caracteres</mat-error>
     </mat-form-field>
+
     <mat-form-field>
-      <input [matDatepicker]="picker" matInput placeholder="Seu aniversário" />
+      <input
+        [matDatepicker]="picker"
+        matInput
+        name="birthdate"
+        ngModel
+        placeholder="Seu aniversário"
+        required
+      />
       <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
+    <mat-checkbox color="primary" name="agree" ngModel required
+      >Aceito os termos e condições
+    </mat-checkbox>
     <button color="primary" mat-raised-button type="submit">Envia</button>
   </form>
 </section>
