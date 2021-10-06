@@ -1,4 +1,5 @@
 <section>
+  <h2 fxLayoutAlign="center">Cadastre-se</h2>
   <form
     #form="ngForm"
     (ngSubmit)="onSubmit(form)"
@@ -34,8 +35,13 @@
         required
         type="password"
       />
-      <mat-hint align="end">{{ pwInput.value?.length }} / 6 </mat-hint>
+      <mat-hint align="end">{{ pwInput.value?.length }} / 6</mat-hint>
       <mat-error>A senha deve ter no mínimo 6 caracteres</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input [matDatepicker]="picker" matInput placeholder="Seu aniversário" />
+      <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     <button color="primary" mat-raised-button type="submit">Envia</button>
   </form>
