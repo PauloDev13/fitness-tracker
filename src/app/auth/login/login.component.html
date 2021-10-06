@@ -1,1 +1,54 @@
-<p>login works!</p>
+<section class="section">
+  <h2 fxLayoutAlign="center">Login</h2>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="loginForm"
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    fxLayoutGap="15px"
+  >
+    <mat-form-field>
+      <input
+        formControlName="email"
+        matInput
+        placeholder="Seu e-mail"
+        type="email"
+      />
+      <mat-hint>Entre com um email válido</mat-hint>
+      <mat-error
+        *ngIf="
+          loginForm.get('email')?.errors?.required &&
+          loginForm.get('email')?.touched
+        "
+        >Email é obrigatório
+      </mat-error>
+      <mat-error
+        *ngIf="
+          loginForm.get('email')?.errors?.email &&
+          loginForm.get('email')?.touched
+        "
+        >Email inválido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field hintLabel="Entre com a senha">
+      <input
+        formControlName="password"
+        matInput
+        name="password"
+        placeholder="Sua senha"
+        type="password"
+      />
+      <mat-error>Senha é obrigatória</mat-error>
+    </mat-form-field>
+
+    <button
+      [disabled]="loginForm.invalid"
+      color="primary"
+      mat-raised-button
+      type="submit"
+    >
+      Entrar
+    </button>
+  </form>
+</section>
