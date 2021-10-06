@@ -7,21 +7,35 @@
   >
     <mat-form-field>
       <input
+        #emailInput="ngModel"
+        email
         matInput
         name="email"
         ngModel
         placeholder="Seu e-mail"
+        required
         type="email"
       />
+      <mat-error *ngIf="emailInput.hasError('required')"
+        >Email é obrigatório
+      </mat-error>
+      <mat-error *ngIf="!emailInput.hasError('required')"
+        >Email inválido
+      </mat-error>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field hintLabel="Mínimo de 6 caracteres">
       <input
+        #pwInput="ngModel"
         matInput
+        minlength="6"
         name="password"
         ngModel
         placeholder="Sua senha"
+        required
         type="password"
       />
+      <mat-hint align="end">{{ pwInput.value?.length }} / 6 </mat-hint>
+      <mat-error>A senha deve ter no mínimo 6 caracteres</mat-error>
     </mat-form-field>
     <button color="primary" mat-raised-button type="submit">Envia</button>
   </form>
