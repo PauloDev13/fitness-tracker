@@ -1,4 +1,4 @@
-<section class="section">
+<section>
   <h2 fxLayoutAlign="center">Login</h2>
   <form
     (ngSubmit)="onSubmit()"
@@ -12,6 +12,7 @@
         formControlName="email"
         matInput
         placeholder="Seu e-mail"
+        required
         type="email"
       />
       <mat-hint>Entre com um email válido</mat-hint>
@@ -37,6 +38,7 @@
         matInput
         name="password"
         placeholder="Sua senha"
+        required
         type="password"
       />
       <mat-error>Senha é obrigatória</mat-error>
