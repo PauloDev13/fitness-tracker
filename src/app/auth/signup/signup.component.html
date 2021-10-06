@@ -1,10 +1,11 @@
-<section>
+<section class="section">
   <h2 fxLayoutAlign="center">Cadastre-se</h2>
   <form
     #form="ngForm"
     (ngSubmit)="onSubmit(form)"
     fxLayout="column"
     fxLayoutAlign="center center"
+    fxLayoutGap="15px"
   >
     <mat-form-field>
       <input
@@ -51,10 +52,20 @@
       />
       <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
+      <mat-error>Escolha uma data para o aniversário</mat-error>
     </mat-form-field>
+
     <mat-checkbox color="primary" name="agree" ngModel required
       >Aceito os termos e condições
     </mat-checkbox>
-    <button color="primary" mat-raised-button type="submit">Envia</button>
+
+    <button
+      [disabled]="form.invalid"
+      color="primary"
+      mat-raised-button
+      type="submit"
+    >
+      Envia
+    </button>
   </form>
 </section>
