@@ -29,6 +29,7 @@
         ],
         "semi": "error",
         "prettier/prettier": "error",
+        "@angular-eslint/no-empty-lifecycle-method": 0,
         "@typescript-eslint/no-non-null-assertion": 0,
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/no-empty-function": 0,
