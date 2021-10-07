@@ -1,8 +1,19 @@
 <section class="new-training" fxLayout fxLayoutAlign="center">
-  <mat-card fxFlex="400px">
-    <mat-card-title> Hora de começar o treino</mat-card-title>
-    <mat-card-content> Selecione o tipo de treinamento</mat-card-content>
-    <mat-card-actions>
+  <mat-card fxFlex="400px" fxFlex.xs="100%">
+    <mat-card-title fxLayoutAlign="center">
+      Hora de começar o treino
+    </mat-card-title>
+    <mat-card-content fxLayoutAlign="center">
+      <mat-form-field appearance="fill">
+        <mat-select placeholder="Selecione uma opção">
+          <mat-option value="abdominais"> Abdominais</mat-option>
+          <mat-option value="flexoes"> Flexões</mat-option>
+          <mat-option value="polichinelos"> Polichinelos</mat-option>
+          <mat-option value="jump"> Jump</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions fxLayoutAlign="center">
       <button mat-raised-button type="submit">Início</button>
     </mat-card-actions>
   </mat-card>
