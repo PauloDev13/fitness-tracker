@@ -5,11 +5,12 @@
     </mat-card-title>
     <mat-card-content fxLayoutAlign="center">
       <mat-form-field appearance="fill">
-        <mat-select placeholder="Selecione uma opção">
-          <mat-option value="abdominais"> Abdominais</mat-option>
-          <mat-option value="flexoes"> Flexões</mat-option>
-          <mat-option value="polichinelos"> Polichinelos</mat-option>
-          <mat-option value="jump"> Jump</mat-option>
+        <mat-select #select placeholder="Selecione uma opção" required>
+          <mat-option
+            *ngFor="let exercise of exercises"
+            [value]="exercise.id"
+            >{{ exercise.name }}</mat-option
+          >
         </mat-select>
       </mat-form-field>
     </mat-card-content>
