@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+
+import { StopTrainingComponent } from '../../components/dialogs/stop-training.component';
 
 @Component({
   selector: 'app-current-training',
@@ -9,7 +12,7 @@ export class CurrentTrainingComponent implements OnInit {
   progress = 0;
   timer!: number;
 
-  constructor() {}
+  constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.timer = setInterval(() => {
@@ -23,5 +26,6 @@ export class CurrentTrainingComponent implements OnInit {
 
   onStop() {
     clearInterval(this.timer);
+    this.dialog.open(StopTrainingComponent);
   }
 }

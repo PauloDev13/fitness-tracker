@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
+import { StopTrainingComponent } from './components/dialogs/stop-training.component';
 import { HeaderComponent } from './components/navigation/header/header.component';
 import { SidenavListComponent } from './components/sidenav-list/sidenav-list.component';
 import { MaterialModule } from './material.module';
@@ -29,6 +30,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     SignupComponent,
     HeaderComponent,
     SidenavListComponent,
+    StopTrainingComponent,
   ],
   imports: [
     BrowserModule,
