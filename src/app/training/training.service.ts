@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { Exercise } from './exercise-model';
 
@@ -6,6 +7,8 @@ import { Exercise } from './exercise-model';
   providedIn: 'root',
 })
 export class TrainingService {
+  exerciseChanged = new Subject<Exercise>();
+
   private availableExercises: Exercise[] = [
     { id: '1', name: 'abdominais', duration: 30, calories: 8 },
     { id: '2', name: 'flexões', duration: 20, calories: 1 },
@@ -25,5 +28,7 @@ export class TrainingService {
     this.runningExercises = this.availableExercises.find(
       (ex) => ex?.id === selectedId,
     );
+
+    this.exerciseChanged.next({ ...this.runningExercises! });
   }
 }
