@@ -10,7 +10,7 @@ import { User } from '../models/user-model';
 })
 export class AuthService {
   public authChange = new Subject<boolean>();
-  private user: User = { email: '', password: '' };
+  private user!: User;
 
   constructor(private router: Router) {}
 
@@ -44,7 +44,7 @@ export class AuthService {
   }
 
   isAuth(): boolean {
-    return !this.getUser();
+    return this.user !== undefined;
   }
 
   private authSuccessfully(): void {
