@@ -12,7 +12,9 @@
       <li *ngIf="!isAuth"><a routerLink="/signup">Cadastra-se</a></li>
       <li *ngIf="!isAuth"><a routerLink="/login">Entrar</a></li>
       <li *ngIf="isAuth"><a routerLink="/training">Treinamento</a></li>
-      <li *ngIf="isAuth"><a>Sair</a></li>
+      <li *ngIf="isAuth">
+        <a (click)="onLogout()" style="cursor: pointer">Sair</a>
+      </li>
     </ul>
   </div>
 </mat-toolbar>
