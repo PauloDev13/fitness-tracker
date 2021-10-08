@@ -13,9 +13,17 @@ export class TrainingService {
     { id: '4', name: 'jump', duration: 120, calories: 100 },
   ];
 
+  private runningExercises!: Exercise | undefined;
+
   constructor() {}
 
   getExercises(): Exercise[] {
     return this.availableExercises.slice();
+  }
+
+  startExercise(selectedId: string) {
+    this.runningExercises = this.availableExercises.find(
+      (ex) => ex?.id === selectedId,
+    );
   }
 }
