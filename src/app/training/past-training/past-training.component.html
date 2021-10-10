@@ -1,1 +1,44 @@
-<p>past-training works!</p>
+<div class="mat-elevation-z8">
+  <table [dataSource]="dataSource" mat-table>
+    <ng-container matColumnDef="date">
+      <th *matHeaderCellDef mat-header-cell>Data</th>
+      <td *matCellDef="let exercise" mat-cell>
+        {{ exercise.date | date: 'dd/MM/yyyy':'':'pt-BR' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th *matHeaderCellDef mat-header-cell>Nome</th>
+      <td *matCellDef="let exercise" mat-cell>{{ exercise.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="calories">
+      <th *matHeaderCellDef mat-header-cell>Calorias</th>
+      <td *matCellDef="let exercise" mat-cell>
+        {{ exercise.calories | number: '':'pt-BR' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="duration">
+      <th *matHeaderCellDef mat-header-cell>Duração</th>
+      <td *matCellDef="let exercise" mat-cell>
+        {{ exercise.duration | number: '':'pt-BR' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="state">
+      <th *matHeaderCellDef mat-header-cell>Status</th>
+      <td *matCellDef="let exercise" mat-cell>{{ exercise.state }}</td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    aria-label="Selecione a página"
+    showFirstLastButtons
+  >
+  </mat-paginator>
+</div>

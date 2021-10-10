@@ -1,4 +1,4 @@
-type State = 'completed' | 'cancelled' | null;
+type State = 'concluído' | 'cancelado' | null;
 
 interface ExerciseModel {
   id: string;

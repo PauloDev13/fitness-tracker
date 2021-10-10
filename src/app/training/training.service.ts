@@ -25,6 +25,10 @@ export class TrainingService {
     return this.availableExercises.slice();
   }
 
+  getCompletedOrCancelExercises() {
+    return this.exercises.slice();
+  }
+
   startExercise(selectedId: string) {
     console.log(selectedId);
     this.runningExercises = this.availableExercises.find(
@@ -38,7 +42,7 @@ export class TrainingService {
     this.exercises.push({
       ...this.runningExercises!,
       date: new Date(),
-      state: 'completed',
+      state: 'concluído',
     });
     this.runningExercises = undefined;
     this.exerciseChanged.next(undefined);
@@ -50,7 +54,7 @@ export class TrainingService {
       duration: this.runningExercises?.duration! * (progress / 100),
       calories: this.runningExercises?.calories! * (progress / 100),
       date: new Date(),
-      state: 'cancelled',
+      state: 'cancelado',
     });
     this.runningExercises = undefined;
     this.exerciseChanged.next(undefined);

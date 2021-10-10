@@ -1,6 +1,11 @@
+import { registerLocaleData } from '@angular/common';
+import localePT from '@angular/common/locales/pt';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -17,6 +22,8 @@ import { NewTrainingComponent } from './training/new-training/new-training.compo
 import { PastTrainingComponent } from './training/past-training/past-training.component';
 import { TrainingComponent } from './training/training.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+
+registerLocaleData(localePT);
 
 @NgModule({
   declarations: [
@@ -40,6 +47,9 @@ import { WelcomeComponent } from './welcome/welcome.component';
     MaterialModule,
     AppRoutingModule,
     FlexLayoutModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
