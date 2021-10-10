@@ -56,7 +56,12 @@
 
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
     <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
-
-    <!-- Row shown when there is no matching data.-->
   </table>
+  <mat-paginator
+    *ngIf="dataSource.data.length >= 5"
+    [pageSizeOptions]="[5, 10, 20]"
+    aria-label="Select page of periodic elements"
+    showFirstLastButtons
+  >
+  </mat-paginator>
 </div>
