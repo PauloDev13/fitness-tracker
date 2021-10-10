@@ -1,5 +1,14 @@
-<div class="mat-elevation-z8" fxLayout fxLayoutAlign="center center" matSort>
-  <table [dataSource]="dataSource" mat-table>
+<div class="mat-elevation-z8" fxLayout="column" fxLayoutAlign="center center">
+  <mat-form-field>
+    <input
+      #filterValue
+      (keyup)="doFilter($event)"
+      matInput
+      placeholder="Filtro"
+      type="text"
+    />
+  </mat-form-field>
+  <table [dataSource]="dataSource" mat-table matSort>
     <ng-container matColumnDef="date">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>Data</th>
       <td *matCellDef="let exercise" mat-cell>
@@ -31,7 +40,23 @@
       <td *matCellDef="let exercise" mat-cell>{{ exercise.state }}</td>
     </ng-container>
 
+    <ng-container *ngIf="dataSource.data.length === 0; else filter">
+      <tr *matNoDataRow class="mat-row">
+        <td class="mat-cell" colspan="4">Não há registro cadastrados</td>
+      </tr>
+    </ng-container>
+
+    <ng-template #filter>
+      <tr *matNoDataRow class="mat-row">
+        <td class="mat-cell" colspan="4">
+          Não há registro para o filtro: {{ filterValue.value }}
+        </td>
+      </tr>
+    </ng-template>
+
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
     <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+
+    <!-- Row shown when there is no matching data.-->
   </table>
 </div>
