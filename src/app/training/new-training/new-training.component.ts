@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Exercise } from '../exercise-model';
 import { TrainingService } from '../training.service';
@@ -22,7 +23,17 @@ export class NewTrainingComponent implements OnInit {
   ngOnInit(): void {
     this.exercises = this.firestore
       .collection<Exercise>('availableExercises')
-      .valueChanges();
+      .snapshotChanges()
+      .pipe(
+        map((docArray) => {
+          return docArray.map((doc) => {
+            return {
+              ...doc.payload.doc.data(),
+              id: doc.payload.doc.id,
+            };
+          });
+        }),
+      );
     // this.exercises = this.trainingService.getExercises();
   }
 
