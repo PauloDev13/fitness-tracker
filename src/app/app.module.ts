@@ -2,6 +2,7 @@ import { registerLocaleData } from '@angular/common';
 import localePT from '@angular/common/locales/pt';
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -41,6 +42,7 @@ registerLocaleData(localePT);
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireAuthModule,
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
