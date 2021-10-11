@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
@@ -17,6 +18,7 @@ export class AuthService {
     private router: Router,
     private FirebaseAuth: AngularFireAuth,
     private trainingService: TrainingService,
+    private snackbar: MatSnackBar,
   ) {}
 
   initAuthListener(): void {
@@ -37,15 +39,31 @@ export class AuthService {
   registerUser(authData: AuthData): void {
     const { email, password } = authData;
     this.FirebaseAuth.createUserWithEmailAndPassword(email, password)
-      .then(() => {})
-      .catch((error) => console.log(error));
+      .then(() => {
+        this.snackbar.open('Cadastro realizado com sucesso', 'Fechar', {
+          duration: 2000,
+        });
+      })
+      .catch(() => {
+        this.snackbar.open('E-mail já cadastrado', 'Fechar', {
+          duration: 2000,
+        });
+      });
   }
 
   login(authData: AuthData): void {
     const { email, password } = authData;
     this.FirebaseAuth.signInWithEmailAndPassword(email, password)
-      .then(() => {})
-      .catch((error) => console.log(error));
+      .then(() => {
+        this.snackbar.open('Login realizado com sucesso', 'Fechar', {
+          duration: 2000,
+        });
+      })
+      .catch(() => {
+        this.snackbar.open('Usuário e/ou Senha inválido', 'Fechar', {
+          duration: 2000,
+        });
+      });
   }
 
   logout(): void {
