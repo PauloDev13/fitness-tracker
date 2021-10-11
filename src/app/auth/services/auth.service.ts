@@ -19,39 +19,40 @@ export class AuthService {
     private trainingService: TrainingService,
   ) {}
 
-  registerUser(authData: AuthData) {
+  initAuthListener(): void {
+    this.FirebaseAuth.authState.subscribe((user) => {
+      if (user) {
+        this.isAuthenticated = true;
+        this.authChange.next(true);
+        this.router.navigate(['/training']).then();
+        return;
+      }
+      this.trainingService.cancelSubscriptions();
+      this.authChange.next(false);
+      this.router.navigate(['/login']).then();
+      this.isAuthenticated = false;
+    });
+  }
+
+  registerUser(authData: AuthData): void {
     const { email, password } = authData;
     this.FirebaseAuth.createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        this.authSuccessfully();
-      })
+      .then(() => {})
       .catch((error) => console.log(error));
   }
 
-  login(authData: AuthData) {
+  login(authData: AuthData): void {
     const { email, password } = authData;
     this.FirebaseAuth.signInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.authSuccessfully();
-      })
+      .then(() => {})
       .catch((error) => console.log(error));
   }
 
-  logout() {
-    this.trainingService.cancelSubscriptions();
+  logout(): void {
     this.FirebaseAuth.signOut().then();
-    this.authChange.next(false);
-    this.router.navigate(['/login']).then();
-    this.isAuthenticated = false;
   }
 
   isAuth(): boolean {
     return this.isAuthenticated;
-  }
-
-  private authSuccessfully(): void {
-    this.isAuthenticated = true;
-    this.authChange.next(true);
-    this.router.navigate(['/training']).then();
   }
 }
