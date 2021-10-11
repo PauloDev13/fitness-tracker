@@ -11,9 +11,11 @@ import { Exercise } from './exercise-model';
 export class TrainingService {
   exerciseChanged = new Subject<Exercise>();
   exercisesChanged = new Subject<Exercise[]>();
+  finishedExercisesChanged = new Subject<Exercise[]>();
   private availableExercises!: Exercise[];
   private runningExercises!: Exercise | undefined;
-  private exercises: Exercise[] = [];
+
+  // private finishedExercises: Exercise[] = [];
 
   constructor(private firestore: AngularFirestore) {}
 
@@ -37,7 +39,7 @@ export class TrainingService {
       });
   }
 
-  startExercise(selectedId: string) {
+  startExercise(selectedId: string): void {
     this.runningExercises = this.availableExercises.find(
       (ex) => ex.id === selectedId,
     );
@@ -45,8 +47,8 @@ export class TrainingService {
     this.exerciseChanged.next({ ...this.runningExercises! });
   }
 
-  completeExercise() {
-    this.exercises.push({
+  completeExercise(): void {
+    this.addDataToDatabase({
       ...this.runningExercises!,
       date: new Date(),
       state: 'concluído',
@@ -55,8 +57,8 @@ export class TrainingService {
     this.exerciseChanged.next(undefined);
   }
 
-  cancelledExercise(progress: number) {
-    this.exercises.push({
+  cancelledExercise(progress: number): void {
+    this.addDataToDatabase({
       ...this.runningExercises!,
       duration: this.runningExercises?.duration! * (progress / 100),
       calories: this.runningExercises?.calories! * (progress / 100),
@@ -67,7 +69,20 @@ export class TrainingService {
     this.exerciseChanged.next(undefined);
   }
 
-  getRunningExercise() {
+  getRunningExercise(): Exercise {
     return { ...this.runningExercises! };
+  }
+
+  fetchCompletedOrCancelledExercises() {
+    this.firestore
+      .collection<Exercise>('finishedExercises')
+      .valueChanges()
+      .subscribe((exercises: Exercise[]) => {
+        this.finishedExercisesChanged.next(exercises);
+      });
+  }
+
+  private addDataToDatabase(exercises: Exercise) {
+    this.firestore.collection('finishedExercises').add(exercises).then();
   }
 }

@@ -21,7 +21,7 @@ import { TrainingService } from '../training.service';
 export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns = ['date', 'name', 'duration', 'calories', 'state'];
 
-  exercisesSubscription!: Subscription;
+  exercisesChangedSubscription!: Subscription;
   dataSource = new MatTableDataSource<Exercise>();
 
   @ViewChild(MatSort) sort!: MatSort;
@@ -30,11 +30,11 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private trainingService: TrainingService) {}
 
   ngOnInit(): void {
-    this.exercisesSubscription =
-      this.trainingService.exercisesChanged.subscribe((exercises) => {
+    this.exercisesChangedSubscription =
+      this.trainingService.finishedExercisesChanged.subscribe((exercises) => {
         this.dataSource.data = exercises;
       });
-    this.trainingService.fetchAvailableExercises();
+    this.trainingService.fetchCompletedOrCancelledExercises();
   }
 
   ngAfterViewInit(): void {
@@ -49,6 +49,6 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.exercisesSubscription.unsubscribe();
+    this.exercisesChangedSubscription.unsubscribe();
   }
 }
