@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
+import { UiService } from '../../shared/ui.service';
 import { TrainingService } from '../../training/training.service';
 import { AuthData } from '../models/auth-data-model';
 
@@ -19,6 +20,7 @@ export class AuthService {
     private FirebaseAuth: AngularFireAuth,
     private trainingService: TrainingService,
     private snackbar: MatSnackBar,
+    private uiService: UiService,
   ) {}
 
   initAuthListener(): void {
@@ -37,14 +39,20 @@ export class AuthService {
   }
 
   registerUser(authData: AuthData): void {
+    this.uiService.loadingStateChanged.next(true);
+
     const { email, password } = authData;
     this.FirebaseAuth.createUserWithEmailAndPassword(email, password)
       .then(() => {
+        this.uiService.loadingStateChanged.next(false);
+
         this.snackbar.open('Cadastro realizado com sucesso', 'Fechar', {
           duration: 2000,
         });
       })
       .catch(() => {
+        this.uiService.loadingStateChanged.next(false);
+
         this.snackbar.open('E-mail já cadastrado', 'Fechar', {
           duration: 2000,
         });
@@ -52,14 +60,20 @@ export class AuthService {
   }
 
   login(authData: AuthData): void {
+    this.uiService.loadingStateChanged.next(true);
+
     const { email, password } = authData;
     this.FirebaseAuth.signInWithEmailAndPassword(email, password)
       .then(() => {
+        this.uiService.loadingStateChanged.next(false);
+
         this.snackbar.open('Login realizado com sucesso', 'Fechar', {
           duration: 2000,
         });
       })
       .catch(() => {
+        this.uiService.loadingStateChanged.next(false);
+
         this.snackbar.open('Usuário e/ou Senha inválido', 'Fechar', {
           duration: 2000,
         });

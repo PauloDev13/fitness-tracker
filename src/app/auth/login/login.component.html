@@ -45,6 +45,7 @@
     </mat-form-field>
 
     <button
+      *ngIf="!isLoading"
       [disabled]="loginForm.invalid"
       color="primary"
       mat-raised-button
@@ -52,5 +53,6 @@
     >
       Entrar
     </button>
+    <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
   </form>
 </section>
