@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { CurrentTrainingComponent } from './current-training/current-training.component';
 import { NewTrainingComponent } from './new-training/new-training.component';
 import { PastTrainingComponent } from './past-training/past-training.component';
+import { TrainingRouterModule } from './training-router.module';
 import { TrainingComponent } from './training.component';
 
 @NgModule({
@@ -17,7 +18,7 @@ import { TrainingComponent } from './training.component';
     TrainingComponent,
     StopTrainingComponent,
   ],
-  imports: [SharedModule],
+  imports: [SharedModule, TrainingRouterModule],
   providers: [{ provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl }],
 })
 export class TrainingModule {}

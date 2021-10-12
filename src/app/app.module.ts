@@ -13,7 +13,6 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { NavigationModule } from './components/navigation.module';
 import { SharedModule } from './shared/shared.module';
-import { TrainingModule } from './training/training.module';
 import { WelcomeModule } from './welcome/welcome.module';
 
 registerLocaleData(localePT);
@@ -22,14 +21,14 @@ registerLocaleData(localePT);
   declarations: [AppComponent],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
-    //AngularFirestoreModule,
+    // AngularFirestoreModule,
     // AngularFireAuthModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     AuthModule,
     NavigationModule,
-    TrainingModule,
+    // TrainingModule,
     WelcomeModule,
     SharedModule,
   ],
