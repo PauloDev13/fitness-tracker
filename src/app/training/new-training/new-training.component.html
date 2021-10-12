@@ -5,7 +5,7 @@
         Hora de começar o treino
       </mat-card-title>
       <mat-card-content fxLayoutAlign="center">
-        <mat-form-field appearance="fill">
+        <mat-form-field *ngIf="!isLoading" appearance="fill">
           <mat-select
             #selectId="ngModel"
             name="exercise"
@@ -23,8 +23,10 @@
             >Escolha uma modalidade de exercício
           </mat-error>
         </mat-form-field>
+
+        <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
       </mat-card-content>
-      <mat-card-actions fxLayoutAlign="center">
+      <mat-card-actions *ngIf="!isLoading" fxLayoutAlign="center">
         <button
           [disabled]="formNewTraining.invalid"
           mat-raised-button
