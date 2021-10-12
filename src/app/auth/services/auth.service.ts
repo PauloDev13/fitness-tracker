@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
@@ -19,7 +18,6 @@ export class AuthService {
     private router: Router,
     private FirebaseAuth: AngularFireAuth,
     private trainingService: TrainingService,
-    private snackbar: MatSnackBar,
     private uiService: UiService,
   ) {}
 
@@ -45,17 +43,15 @@ export class AuthService {
     this.FirebaseAuth.createUserWithEmailAndPassword(email, password)
       .then(() => {
         this.uiService.loadingStateChanged.next(false);
-
-        this.snackbar.open('Cadastro realizado com sucesso', 'Fechar', {
-          duration: 2000,
-        });
+        this.uiService.showSnackbar(
+          'Cadastro realizado com sucesso',
+          'Fechar',
+          2000,
+        );
       })
       .catch(() => {
         this.uiService.loadingStateChanged.next(false);
-
-        this.snackbar.open('E-mail já cadastrado', 'Fechar', {
-          duration: 2000,
-        });
+        this.uiService.showSnackbarSimple('E-mail já cadastrado');
       });
   }
 
@@ -66,17 +62,11 @@ export class AuthService {
     this.FirebaseAuth.signInWithEmailAndPassword(email, password)
       .then(() => {
         this.uiService.loadingStateChanged.next(false);
-
-        this.snackbar.open('Login realizado com sucesso', 'Fechar', {
-          duration: 2000,
-        });
+        this.uiService.showSnackbarSimple('Login realizado com sucesso');
       })
       .catch(() => {
         this.uiService.loadingStateChanged.next(false);
-
-        this.snackbar.open('Usuário e/ou Senha inválido', 'Fechar', {
-          duration: 2000,
-        });
+        this.uiService.showSnackbarSimple('Usuário e/ou Senha inválido');
       });
   }
 

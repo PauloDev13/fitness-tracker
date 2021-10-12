@@ -5,6 +5,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -17,6 +18,7 @@ import { StopTrainingComponent } from './components/dialogs/stop-training.compon
 import { HeaderComponent } from './components/navigation/header/header.component';
 import { SidenavListComponent } from './components/sidenav-list/sidenav-list.component';
 import { MaterialModule } from './material.module';
+import { MyCustomPaginatorIntl } from './shared/my-custom-paginator-intl';
 import { CurrentTrainingComponent } from './training/current-training/current-training.component';
 import { NewTrainingComponent } from './training/new-training/new-training.component';
 import { PastTrainingComponent } from './training/past-training/past-training.component';
@@ -50,7 +52,7 @@ registerLocaleData(localePT);
     MaterialModule,
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [{ provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
