@@ -1,7 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
+import { TypeState } from '../../app.reducer';
 import { UiService } from '../../shared/ui.service';
 import { AuthService } from '../services/auth.service';
 
@@ -10,23 +13,29 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup = new FormGroup({});
-  isLoading = false;
-  private loadingSubs!: Subscription;
+  isLoading$!: Observable<boolean>;
+  // isLoading = false;
+  // private loadingSubs!: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private uiService: UiService,
+    private store: Store<{ ui: TypeState }>,
   ) {}
 
   ngOnInit(): void {
-    this.loadingSubs = this.uiService.loadingStateChanged.subscribe(
-      (loading: boolean) => {
-        this.isLoading = loading;
-      },
-    );
+    // this.store.subscribe((data) => (this.isLoading = data.ui.isLoading));
+    // console.log(this.isLoading);
+    this.isLoading$ = this.store.pipe(map((state) => state.ui.isLoading));
+
+    // this.loadingSubs = this.uiService.loadingStateChanged.subscribe(
+    //   (loading: boolean) => {
+    //     this.isLoading = loading;
+    //   },
+    // );
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -42,9 +51,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authService.login(user);
   }
 
-  ngOnDestroy(): void {
-    if (this.loadingSubs) {
-      this.loadingSubs.unsubscribe();
-    }
-  }
+  // ngOnDestroy(): void {
+  //   if (this.loadingSubs) {
+  //     this.loadingSubs.unsubscribe();
+  //   }
+  // }
 }

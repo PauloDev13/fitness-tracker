@@ -8,11 +8,11 @@ import { MaterialModule } from '../material.module';
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
-    MaterialModule,
-    FormsModule,
-    ReactiveFormsModule,
-    FlexLayoutModule,
+    // CommonModule,
+    // MaterialModule,
+    // FormsModule,
+    // ReactiveFormsModule,
+    // FlexLayoutModule,
   ],
   exports: [
     CommonModule,
