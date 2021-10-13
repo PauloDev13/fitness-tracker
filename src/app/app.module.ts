@@ -11,7 +11,7 @@ import { StoreModule } from '@ngrx/store';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { appReducer } from './app.reducer';
+import { reducers } from './app.reducer';
 import { AuthModule } from './auth/auth.module';
 import { NavigationModule } from './components/navigation.module';
 import { SharedModule } from './shared/shared.module';
@@ -23,7 +23,7 @@ registerLocaleData(localePT);
   declarations: [AppComponent],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
-    StoreModule.forRoot({ ui: appReducer }),
+    StoreModule.forRoot(reducers),
     // AngularFirestoreModule,
     // AngularFireAuthModule,
     BrowserModule,

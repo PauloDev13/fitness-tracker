@@ -9,10 +9,14 @@
   </div>
   <div fxFlex fxHide.xs fxLayout fxLayoutAlign="flex-end">
     <ul class="navigation-items" fxLayout fxLayoutGap="10px">
-      <li *ngIf="!isAuth"><a routerLink="/signup">Cadastra-se</a></li>
-      <li *ngIf="!isAuth"><a routerLink="/login">Entrar</a></li>
-      <li *ngIf="isAuth"><a routerLink="/training">Treinamento</a></li>
-      <li *ngIf="isAuth">
+      <li *ngIf="(isAuth$ | async) === false">
+        <a routerLink="/signup">Cadastra-se</a>
+      </li>
+      <li *ngIf="(isAuth$ | async) === false">
+        <a routerLink="/login">Entrar</a>
+      </li>
+      <li *ngIf="isAuth$ | async"><a routerLink="/training">Treinamento</a></li>
+      <li *ngIf="isAuth$ | async">
         <a (click)="onLogout()" style="cursor: pointer">Sair</a>
       </li>
     </ul>

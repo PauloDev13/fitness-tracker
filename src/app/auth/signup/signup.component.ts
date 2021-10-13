@@ -1,7 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Observable, of } from 'rxjs';
 
+import * as fromRoot from '../../app.reducer';
 import { UiService } from '../../shared/ui.service';
 import { AuthService } from '../services/auth.service';
 
@@ -10,18 +12,24 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
 })
-export class SignupComponent implements OnInit, OnDestroy {
-  isLoading = false;
-  private loadingSubs!: Subscription;
+export class SignupComponent implements OnInit {
+  isLoading$: Observable<boolean> = of(false);
 
-  constructor(private authService: AuthService, private uiService: UiService) {}
+  // private loadingSubs!: Subscription;
+
+  constructor(
+    private authService: AuthService,
+    private uiService: UiService,
+    private store: Store<fromRoot.IState>,
+  ) {}
 
   ngOnInit(): void {
-    this.loadingSubs = this.uiService.loadingStateChanged.subscribe(
-      (loading: boolean) => {
-        this.isLoading = loading;
-      },
-    );
+    this.isLoading$ = this.store.select(fromRoot.getIsLoading);
+    // this.loadingSubs = this.uiService.loadingStateChanged.subscribe(
+    //   (loading: boolean) => {
+    //     this.isLoading = loading;
+    //   },
+    // );
   }
 
   onSubmit(form: NgForm) {
@@ -32,9 +40,9 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.authService.registerUser(user);
   }
 
-  ngOnDestroy(): void {
-    if (this.loadingSubs) {
-      this.loadingSubs.unsubscribe();
-    }
-  }
+  // ngOnDestroy(): void {
+  //   if (this.loadingSubs) {
+  //     this.loadingSubs.unsubscribe();
+  //   }
+  // }
 }

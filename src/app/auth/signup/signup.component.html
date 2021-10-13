@@ -60,7 +60,7 @@
     </mat-checkbox>
 
     <button
-      *ngIf="!isLoading"
+      *ngIf="(isLoading$ | async) === false"
       [disabled]="form.invalid"
       color="primary"
       mat-raised-button
@@ -68,6 +68,6 @@
     >
       Envia
     </button>
-    <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+    <mat-spinner *ngIf="isLoading$ | async" diameter="50"></mat-spinner>
   </form>
 </section>
