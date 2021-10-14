@@ -1,3 +1,5 @@
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+
 import * as fromRoot from '../../app.reducer';
 import {
   SET_AVAILABLE_TRAININGS,
@@ -55,11 +57,20 @@ export const trainingReducer = (
       return state;
   }
 };
+export const getTrainingState =
+  createFeatureSelector<TrainingState>('training');
 
-export const getAvailableExercises = (state: TrainingState) =>
-  state.availableExercises;
+export const getAvailableExercises = createSelector(
+  getTrainingState,
+  (state: TrainingState) => state.availableExercises,
+);
 
-export const getFinishedExercises = (state: TrainingState) =>
-  state.finishedExercises;
+export const getFinishedExercises = createSelector(
+  getTrainingState,
+  (state: TrainingState) => state.finishedExercises,
+);
 
-export const getStartExercise = (state: TrainingState) => state.activeTraining;
+export const getStartExercise = createSelector(
+  getTrainingState,
+  (state: TrainingState) => state.activeTraining,
+);
