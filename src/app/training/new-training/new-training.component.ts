@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import * as fromRoot from '../../app.reducer';
 import { UiService } from '../../shared/ui.service';
+import * as fromTraining from '../../training/reducers/training.reducer';
 import { Exercise } from '../exercise-model';
 import { TrainingService } from '../training.service';
 
@@ -14,24 +15,26 @@ import { TrainingService } from '../training.service';
   styleUrls: ['./new-training.component.css'],
 })
 export class NewTrainingComponent implements OnInit, OnDestroy {
-  exercises!: Exercise[];
+  exercises$!: Observable<Exercise[]>;
+  // exercises!: Exercise[];
   isLoading$!: Observable<boolean>;
-  private exercisesSubscription!: Subscription;
+  // private exercisesSubscription!: Subscription;
 
   // private loadingSubs!: Subscription;
 
   constructor(
     private trainingService: TrainingService,
     private uiService: UiService,
-    private store: Store<fromRoot.IState>,
+    private store: Store<fromTraining.TState>,
   ) {}
 
   ngOnInit(): void {
     this.isLoading$ = this.store.select(fromRoot.getIsLoading);
-    this.exercisesSubscription =
-      this.trainingService.exercisesChanged.subscribe((exercises) => {
-        this.exercises = exercises;
-      });
+    this.exercises$ = this.store.select(fromTraining.getAvailableExercises);
+    // this.exercisesSubscription =.
+    //   this.trainingService.exercisesChanged.subscribe((exercises) => {
+    //     this.exercises = exercises;
+    //   });
 
     // this.loadingSubs = this.uiService.loadingStateChanged.subscribe(
     //   (loading: boolean) => {
@@ -50,9 +53,9 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.exercisesSubscription) {
-      this.exercisesSubscription.unsubscribe();
-    }
+    // if (this.exercisesSubscription) {
+    //   this.exercisesSubscription.unsubscribe();
+    // }
     // if (this.loadingSubs) {
     //   this.loadingSubs.unsubscribe();
     // }
