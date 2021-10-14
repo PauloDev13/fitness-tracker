@@ -1,16 +1,11 @@
-import {
-  AfterViewInit,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import { Exercise } from '../exercise-model';
+import * as fromTraining from '../reducers/training.reducer';
 import { TrainingService } from '../training.service';
 
 @Component({
@@ -18,22 +13,28 @@ import { TrainingService } from '../training.service';
   templateUrl: './past-training.component.html',
   styleUrls: ['./past-training.component.css'],
 })
-export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PastTrainingComponent implements OnInit, AfterViewInit {
   displayedColumns = ['date', 'name', 'duration', 'calories', 'state'];
 
-  exercisesChangedSubscription!: Subscription;
+  // exercisesChangedSubscription!: Subscription;
   dataSource = new MatTableDataSource<Exercise>();
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private trainingService: TrainingService) {}
+  constructor(
+    private trainingService: TrainingService,
+    private stores: Store<fromTraining.IState>,
+  ) {}
 
   ngOnInit(): void {
-    this.exercisesChangedSubscription =
-      this.trainingService.finishedExercisesChanged.subscribe((exercises) => {
-        this.dataSource.data = exercises;
-      });
+    this.stores
+      .select(fromTraining.getFinishedExercises)
+      .subscribe((exercises: Exercise[]) => (this.dataSource.data = exercises));
+    // this.exercisesChangedSubscription =
+    //   this.trainingService.finishedExercisesChanged.subscribe((exercises) => {
+    //     this.dataSource.data = exercises;
+    //   });
     this.trainingService.fetchCompletedOrCancelledExercises();
   }
 
@@ -48,9 +49,9 @@ export class PastTrainingComponent implements OnInit, AfterViewInit, OnDestroy {
       .toLowerCase();
   }
 
-  ngOnDestroy(): void {
-    if (this.exercisesChangedSubscription) {
-      this.exercisesChangedSubscription.unsubscribe();
-    }
-  }
+  // ngOnDestroy(): void {
+  //   if (this.exercisesChangedSubscription) {
+  //     this.exercisesChangedSubscription.unsubscribe();
+  //   }
+  // }
 }

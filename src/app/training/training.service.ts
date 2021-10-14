@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Store } from '@ngrx/store';
 import { Subject, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 import * as UI from '../shared/actions/ui.action';
 import { UiService } from '../shared/ui.service';
@@ -14,11 +14,11 @@ import { Exercise } from './exercise-model';
   providedIn: 'root',
 })
 export class TrainingService {
-  exerciseChanged = new Subject<Exercise>();
+  // exerciseChanged = new Subject<Exercise>();
   exercisesChanged = new Subject<Exercise[]>();
-  finishedExercisesChanged = new Subject<Exercise[]>();
-  private availableExercises!: Exercise[];
-  private runningExercises!: Exercise | undefined;
+  // finishedExercisesChanged = new Subject<Exercise[]>();
+  // private availableExercises!: Exercise[];
+  // private runningExercises!: Exercise | undefined;
   private firebaseSubs: Subscription[] = [];
 
   constructor(
@@ -73,33 +73,44 @@ export class TrainingService {
   }
 
   completeExercise(): void {
-    this.addDataToDatabase({
-      ...this.runningExercises!,
-      date: new Date(),
-      state: 'concluído',
-    });
-    this.store.dispatch(new Training.StopTraining());
+    this.store
+      .select(fromTraining.getActiveTraining)
+      .pipe(take(1))
+      .subscribe((exercise) => {
+        if (exercise) {
+          this.addDataToDatabase({
+            ...exercise,
+            date: new Date(),
+            state: 'concluído',
+          });
+          this.store.dispatch(new Training.StopTraining());
+        }
+      });
     // this.runningExercises = undefined;
     // this.exerciseChanged.next(undefined);
   }
 
   cancelledExercise(progress: number): void {
-    this.addDataToDatabase({
-      ...this.runningExercises!,
-      duration: this.runningExercises?.duration! * (progress / 100),
-      calories: this.runningExercises?.calories! * (progress / 100),
-      date: new Date(),
-      state: 'cancelado',
-    });
-
-    this.store.dispatch(new Training.StopTraining());
+    this.store
+      .select(fromTraining.getActiveTraining)
+      .pipe(take(1))
+      .subscribe((exercise) => {
+        this.addDataToDatabase({
+          ...exercise!,
+          duration: exercise?.duration! * (progress / 100),
+          calories: exercise?.calories! * (progress / 100),
+          date: new Date(),
+          state: 'cancelado',
+        });
+        this.store.dispatch(new Training.StopTraining());
+      });
     // this.runningExercises = undefined;
     // this.exerciseChanged.next(undefined);
   }
 
-  getRunningExercise(): Exercise {
-    return { ...this.runningExercises! };
-  }
+  // getRunningExercise(): Exercise {
+  //   return { ...this.runningExercises! };
+  // }
 
   fetchCompletedOrCancelledExercises() {
     this.firebaseSubs.push(
