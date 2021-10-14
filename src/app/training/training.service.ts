@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Store } from '@ngrx/store';
 import { Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import * as UI from '../shared/actions/ui.action';
 import { UiService } from '../shared/ui.service';
+import * as Training from '../training/actions/training.action';
+import * as fromTraining from '../training/reducers/training.reducer';
 import { Exercise } from './exercise-model';
 
 @Injectable({
@@ -20,6 +24,7 @@ export class TrainingService {
   constructor(
     private firestore: AngularFirestore,
     private uiService: UiService,
+    private store: Store<fromTraining.IState>,
   ) {}
 
   fetchAvailableExercises(): void {
@@ -41,12 +46,15 @@ export class TrainingService {
         )
         .subscribe(
           (exercises: Exercise[]) => {
-            this.uiService.loadingStateChanged.next(false);
-            this.availableExercises = exercises;
-            this.exercisesChanged.next([...this.availableExercises]);
+            this.store.dispatch(new UI.StopLoading());
+            // this.uiService.loadingStateChanged.next(false);
+            this.store.dispatch(new Training.SetAvailableTrainings(exercises));
+            // this.availableExercises = exercises;
+            // this.exercisesChanged.next([...this.availableExercises]);
           },
           () => {
-            this.uiService.loadingStateChanged.next(false);
+            this.store.dispatch(new UI.StopLoading());
+            // this.uiService.loadingStateChanged.next(false);
             this.uiService.showSnackbarSimple(
               'Erro inesperado. Tente novamente mais tarde',
             );
@@ -57,11 +65,11 @@ export class TrainingService {
   }
 
   startExercise(selectedId: string): void {
-    this.runningExercises = this.availableExercises.find(
-      (ex) => ex.id === selectedId,
-    );
-
-    this.exerciseChanged.next({ ...this.runningExercises! });
+    this.store.dispatch(new Training.StartTraining(selectedId));
+    // this.runningExercises = this.availableExercises.find(
+    //   (ex) => ex.id === selectedId,
+    // );
+    // this.exerciseChanged.next({ ...this.runningExercises! });
   }
 
   completeExercise(): void {
@@ -70,8 +78,9 @@ export class TrainingService {
       date: new Date(),
       state: 'concluído',
     });
-    this.runningExercises = undefined;
-    this.exerciseChanged.next(undefined);
+    this.store.dispatch(new Training.StopTraining());
+    // this.runningExercises = undefined;
+    // this.exerciseChanged.next(undefined);
   }
 
   cancelledExercise(progress: number): void {
@@ -82,8 +91,10 @@ export class TrainingService {
       date: new Date(),
       state: 'cancelado',
     });
-    this.runningExercises = undefined;
-    this.exerciseChanged.next(undefined);
+
+    this.store.dispatch(new Training.StopTraining());
+    // this.runningExercises = undefined;
+    // this.exerciseChanged.next(undefined);
   }
 
   getRunningExercise(): Exercise {
@@ -96,7 +107,8 @@ export class TrainingService {
         .collection<Exercise>('finishedExercises')
         .valueChanges()
         .subscribe((exercises: Exercise[]) => {
-          this.finishedExercisesChanged.next(exercises);
+          this.store.dispatch(new Training.SetFinishedTrainings(exercises));
+          //this.finishedExercisesChanged.next(exercises);
         }),
     );
   }

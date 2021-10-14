@@ -16,7 +16,7 @@ export interface TrainingState {
   activeTraining: Exercise | null;
 }
 
-// export type TState = TrainingState & fromRoot.IState;
+export type TState = TrainingState & fromRoot.IState;
 
 export interface IState extends fromRoot.IState {
   training: TrainingState;
@@ -46,7 +46,11 @@ export const trainingReducer = (
     case START_TRAINING:
       return {
         ...state,
-        activeTraining: action.payload,
+        activeTraining: {
+          ...state.availableExercises.find(
+            (exercise) => exercise.id === action.payload,
+          ),
+        },
       };
     case STOP_TRAINING:
       return {
